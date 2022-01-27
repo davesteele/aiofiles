@@ -1,0 +1,51 @@
+--- a/src/aiofiles/os.py
++++ b/src/aiofiles/os.py
+@@ -8,7 +8,7 @@
+     @wraps(func)
+     async def run(*args, loop=None, executor=None, **kwargs):
+         if loop is None:
+-            loop = asyncio.get_event_loop()
++            loop = asyncio.get_event_loop_policy().get_event_loop()
+         pfunc = partial(func, *args, **kwargs)
+         return await loop.run_in_executor(executor, pfunc)
+ 
+--- a/src/aiofiles/tempfile/__init__.py
++++ b/src/aiofiles/tempfile/__init__.py
+@@ -141,7 +141,7 @@
+ ):
+     """Async method to open a temporary file with async interface"""
+     if loop is None:
+-        loop = asyncio.get_event_loop()
++        loop = asyncio.get_event_loop_policy().get_event_loop()
+ 
+     if named:
+         cb = partial(
+@@ -195,7 +195,7 @@
+ ):
+     """Open a spooled temporary file with async interface"""
+     if loop is None:
+-        loop = asyncio.get_event_loop()
++        loop = asyncio.get_event_loop_policy().get_event_loop()
+ 
+     cb = partial(
+         syncSpooledTemporaryFile,
+@@ -220,7 +220,7 @@
+ ):
+     """Async method to open a temporary directory with async interface"""
+     if loop is None:
+-        loop = asyncio.get_event_loop()
++        loop = asyncio.get_event_loop_policy().get_event_loop()
+ 
+     cb = partial(syncTemporaryDirectory, suffix, prefix, dir)
+     f = await loop.run_in_executor(executor, cb)
+--- a/src/aiofiles/threadpool/__init__.py
++++ b/src/aiofiles/threadpool/__init__.py
+@@ -65,7 +65,7 @@
+ ):
+     """Open an asyncio file."""
+     if loop is None:
+-        loop = asyncio.get_event_loop()
++        loop = asyncio.get_event_loop_policy().get_event_loop()
+     cb = partial(
+         sync_open,
+         file,
