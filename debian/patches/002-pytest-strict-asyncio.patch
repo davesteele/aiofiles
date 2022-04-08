@@ -1,3 +1,8 @@
+Description: Fix pytest-asyncio asyncio_mode deprecation warning
+Author: David Steele <steele@debian.org>
+Bug: https://github.com/Tinche/aiofiles/issues/136
+Last-Update: 2022-04-08
+
 --- a/pyproject.toml
 +++ b/pyproject.toml
 @@ -18,3 +18,6 @@

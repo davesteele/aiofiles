@@ -1,3 +1,8 @@
+Description: Fix deprecation warning on get_event_loop()
+Author: David Steele <steele@debian.org>
+Bug: https://github.com/Tinche/aiofiles/issues/129
+Last-Updated: 2022-04-08
+
 --- a/src/aiofiles/os.py
 +++ b/src/aiofiles/os.py
 @@ -8,7 +8,7 @@
