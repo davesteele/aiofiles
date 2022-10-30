@@ -3,6 +3,7 @@ import pytest
 from aiofiles import tempfile
 import os
 import io
+import sys
 
 
 @pytest.mark.asyncio
@@ -62,6 +63,35 @@ async def test_spooled_temporary_file(mode):
 
         await f.seek(0)
         assert await f.read() == data + data
+
+
+@pytest.mark.asyncio
+@pytest.mark.skipif(
+    sys.version_info < (3, 7),
+    reason=(
+       "text-mode SpooledTemporaryFile is implemented with StringIO in py3.6"
+       "it doesn't support `newlines`"
+    )
+)
+@pytest.mark.parametrize(
+    "test_string, newlines", [("LF\n", "\n"), ("CRLF\r\n", "\r\n")]
+)
+async def test_spooled_temporary_file_newlines(test_string, newlines):
+    """
+    Test `newlines` property in spooled temporary file.
+    issue https://github.com/Tinche/aiofiles/issues/118
+    """
+
+    async with tempfile.SpooledTemporaryFile(mode="w+") as f:
+        await f.write(test_string)
+        await f.flush()
+        await f.seek(0)
+
+        assert f.newlines is None
+
+        await f.read()
+
+        assert f.newlines == newlines
 
 
 @pytest.mark.asyncio

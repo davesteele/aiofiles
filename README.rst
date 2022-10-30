@@ -102,15 +102,23 @@ several useful ``os`` functions that deal with files:
 * ``stat``
 * ``sendfile``
 * ``rename``
+* ``renames``
 * ``replace``
 * ``remove``
+* ``unlink``
 * ``mkdir``
 * ``makedirs``
 * ``rmdir``
 * ``removedirs``
+* ``link``
+* ``symlink``
+* ``readlink``
+* ``listdir``
+* ``scandir``
 * ``path.exists``
 * ``path.isfile``
 * ``path.isdir``
+* ``path.islink``
 * ``path.getsize``
 * ``path.getatime``
 * ``path.getctime``
@@ -165,6 +173,26 @@ as desired. The return type also needs to be registered with the
 
 History
 ~~~~~~~
+22.1.0 (TBC)
+````````````
+* Added ``aiofiles.os.path.islink``.
+  `#126 <https://github.com/Tinche/aiofiles/pull/126>`_
+* Added ``aiofiles.os.readlink``.
+  `#125 <https://github.com/Tinche/aiofiles/pull/125>`_
+* Added ``aiofiles.os.symlink``.
+  `#124 <https://github.com/Tinche/aiofiles/pull/124>`_
+* Added ``aiofiles.os.unlink``.
+  `#123 <https://github.com/Tinche/aiofiles/pull/123>`_
+* Added ``aiofiles.os.link``.
+  `#121 <https://github.com/Tinche/aiofiles/pull/121>`_
+* Added ``aiofiles.os.renames``.
+  `#120 <https://github.com/Tinche/aiofiles/pull/120>`_
+* Added ``aiofiles.os.{listdir, scandir}``.
+  `#143 <https://github.com/Tinche/aiofiles/pull/143>`_
+* Switched to CalVer.
+* Dropped Python 3.6 support. If you require it, use version 0.8.0.
+* aiofiles is now tested on Python 3.11.
+
 0.8.0 (2021-11-27)
 ``````````````````
 * aiofiles is now tested on Python 3.10.
