@@ -1,7 +1,6 @@
 .pytest_cache/
 aiofiles.egg-info/
 .eggs/
-.pc/
 .tox/
 tests/.coverage
 excuses.yaml
