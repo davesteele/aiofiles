@@ -4,8 +4,8 @@ aiofiles: file support for asyncio
 .. image:: https://img.shields.io/pypi/v/aiofiles.svg
         :target: https://pypi.python.org/pypi/aiofiles
 
-.. image:: https://travis-ci.org/Tinche/aiofiles.svg?branch=master
-        :target: https://travis-ci.org/Tinche/aiofiles
+.. image:: https://github.com/Tinche/aiofiles/actions/workflows/main.yml/badge.svg
+        :target: https://github.com/Tinche/aiofiles/actions
 
 .. image:: https://codecov.io/gh/Tinche/aiofiles/branch/master/graph/badge.svg
         :target: https://codecov.io/gh/Tinche/aiofiles
@@ -96,6 +96,11 @@ and delegate to an executor:
 
 In case of failure, one of the usual exceptions will be raised.
 
+``aiofiles.stdin``, ``aiofiles.stdout``, ``aiofiles.stderr``,
+``aiofiles.stdin_bytes``, ``aiofiles.stdout_bytes``, and
+``aiofiles.stderr_bytes`` provide async access to ``sys.stdin``,
+``sys.stdout``, ``sys.stderr``, and their corresponding ``.buffer`` properties.
+
 The ``aiofiles.os`` module contains executor-enabled coroutine versions of
 several useful ``os`` functions that deal with files:
 
@@ -115,6 +120,7 @@ several useful ``os`` functions that deal with files:
 * ``readlink``
 * ``listdir``
 * ``scandir``
+* ``access``
 * ``path.exists``
 * ``path.isfile``
 * ``path.isdir``
@@ -173,8 +179,18 @@ as desired. The return type also needs to be registered with the
 
 History
 ~~~~~~~
-22.1.0 (TBC)
-````````````
+23.1.0 (2023-02-09)
+```````````````````
+* Added ``aiofiles.os.access``.
+  `#146 <https://github.com/Tinche/aiofiles/pull/146>`_
+* Removed ``aiofiles.tempfile.temptypes.AsyncSpooledTemporaryFile.softspace``.
+  `#151 <https://github.com/Tinche/aiofiles/pull/151>`_
+* Added ``aiofiles.stdin``, ``aiofiles.stdin_bytes``, and other stdio streams.
+  `#154 <https://github.com/Tinche/aiofiles/pull/154>`_
+* Transition to ``asyncio.get_running_loop`` (vs ``asyncio.get_event_loop``) internally.
+
+22.1.0 (2022-09-04)
+```````````````````
 * Added ``aiofiles.os.path.islink``.
   `#126 <https://github.com/Tinche/aiofiles/pull/126>`_
 * Added ``aiofiles.os.readlink``.
