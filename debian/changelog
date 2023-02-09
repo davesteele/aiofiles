@@ -1,3 +1,9 @@
+aiofiles (23.1.0-1) UNRELEASED; urgency=medium
+
+  * New upstream version.
+
+ -- David Steele <steele@debian.org>  Wed, 08 Feb 2023 21:50:20 -0500
+
 aiofiles (22.1.0-1) unstable; urgency=medium
 
   * New upstream version.
