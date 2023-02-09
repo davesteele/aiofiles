@@ -9,9 +9,4 @@ async def test_aiofiles():
 
     assert('aiofiles' in contents)
 
-
-event_loop = asyncio.get_event_loop_policy().get_event_loop()
-try:
-    event_loop.run_until_complete(test_aiofiles())
-finally:
-    event_loop.close()
+asyncio.run(test_aiofiles())
