@@ -5,10 +5,10 @@ Last-Update: 2022-04-08
 
 --- a/pyproject.toml
 +++ b/pyproject.toml
-@@ -18,3 +18,6 @@
- [build-system]
- requires = ["poetry-core>=1.0.0"]
- build-backend = "poetry.core.masonry.api"
+@@ -63,3 +63,6 @@
+ [tool.isort]
+ profile = "black"
+ known_first_party = ["aiofiles"]
 +
 +[tool.pytest.ini_options]
 +asyncio_mode="strict"
