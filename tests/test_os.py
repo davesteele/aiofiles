@@ -1,12 +1,14 @@
 """Tests for asyncio's os module."""
-import aiofiles.os
 import asyncio
 import os
-from os import stat
-from os.path import join, dirname, exists, isdir
-from pathlib import Path
-import pytest
 import platform
+from os import stat
+from os.path import dirname, exists, isdir, join
+from pathlib import Path
+
+import pytest
+
+import aiofiles.os
 
 
 @pytest.mark.asyncio
@@ -17,6 +19,16 @@ async def test_stat():
     stat_res = await aiofiles.os.stat(filename)
 
     assert stat_res.st_size == 10
+
+
+@pytest.mark.skipif(platform.system() == "Windows", reason="No statvfs on Windows")
+@pytest.mark.asyncio
+async def test_statvfs():
+    """Test the statvfs call."""
+
+    statvfs_res = await aiofiles.os.statvfs("/")
+
+    assert statvfs_res.f_bsize == os.statvfs("/").f_bsize
 
 
 @pytest.mark.asyncio
@@ -107,8 +119,8 @@ async def test_replace():
     reason="sendfile() syscall doesn't allow file->file",
 )
 @pytest.mark.skipif(
-    platform.system() == "Darwin",
-    reason="sendfile() doesn't work on mac",
+    platform.system() in ("Darwin", "Windows"),
+    reason="sendfile() doesn't work on mac and Win",
 )
 @pytest.mark.asyncio
 async def test_sendfile_file(tmpdir):
@@ -138,6 +150,9 @@ async def test_sendfile_file(tmpdir):
     assert size == actual_size
 
 
+@pytest.mark.skipif(
+    platform.system() in ("Windows"), reason="sendfile() doesn't work on Win"
+)
 @pytest.mark.asyncio
 async def test_sendfile_socket(unused_tcp_port):
     """Test the sendfile functionality, file-to-socket."""
@@ -202,6 +217,14 @@ async def test_islink():
     await aiofiles.os.symlink(src_filename, dst_filename)
     assert await aiofiles.os.path.islink(dst_filename)
     await aiofiles.os.remove(dst_filename)
+
+
+@pytest.mark.asyncio
+async def test_ismount():
+    """Test the path.ismount call."""
+    filename = join(dirname(__file__), "resources")
+    assert not await aiofiles.os.path.ismount(filename)
+    assert await aiofiles.os.path.ismount("/")
 
 
 @pytest.mark.asyncio
@@ -289,6 +312,9 @@ async def test_symlink():
     assert exists(src_filename) and exists(dst_filename) is False
 
 
+@pytest.mark.skipif(
+    platform.system() == "Windows", reason="Doesn't work on Win properly"
+)
 @pytest.mark.asyncio
 async def test_readlink():
     """Test the readlink call."""
@@ -378,7 +404,7 @@ async def test_listdir_dir_with_a_file_and_a_dir():
 async def test_listdir_non_existing_dir():
     """Test the listdir call when the dir doesn't exist."""
     some_dir = join(dirname(__file__), "resources", "some_dir")
-    with pytest.raises(FileNotFoundError) as excinfo:
+    with pytest.raises(FileNotFoundError):
         await aiofiles.os.listdir(some_dir)
 
 
@@ -428,10 +454,11 @@ async def test_scandir_dir_with_only_one_dir():
 async def test_scandir_non_existing_dir():
     """Test the scandir call when the dir doesn't exist."""
     some_dir = join(dirname(__file__), "resources", "some_dir")
-    with pytest.raises(FileNotFoundError) as excinfo:
+    with pytest.raises(FileNotFoundError):
         await aiofiles.os.scandir(some_dir)
 
 
+@pytest.mark.skipif(platform.system() == "Windows", reason="Doesn't work on Win")
 @pytest.mark.asyncio
 async def test_access():
     temp_file = Path(__file__).parent.joinpath("resources", "os_access_temp.txt")
