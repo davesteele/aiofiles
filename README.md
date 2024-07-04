@@ -109,6 +109,8 @@ several useful `os` functions that deal with files:
 - `listdir`
 - `scandir`
 - `access`
+- `getcwd`
+- `path.abspath`
 - `path.exists`
 - `path.isfile`
 - `path.isdir`
@@ -150,25 +152,50 @@ as desired. The return type also needs to be registered with the
 
 ```python
 aiofiles.threadpool.wrap.register(mock.MagicMock)(
-    lambda *args, **kwargs: threadpool.AsyncBufferedIOBase(*args, **kwargs))
+    lambda *args, **kwargs: aiofiles.threadpool.AsyncBufferedIOBase(*args, **kwargs)
+)
 
 async def test_stuff():
-    data = 'data'
-    mock_file = mock.MagicMock()
+    write_data = 'data'
+    read_file_chunks = [
+        b'file chunks 1',
+        b'file chunks 2',
+        b'file chunks 3',
+        b'',
+    ]
+    file_chunks_iter = iter(read_file_chunks)
 
-    with mock.patch('aiofiles.threadpool.sync_open', return_value=mock_file) as mock_open:
+    mock_file_stream = mock.MagicMock(
+        read=lambda *args, **kwargs: next(file_chunks_iter)
+    )
+
+    with mock.patch('aiofiles.threadpool.sync_open', return_value=mock_file_stream) as mock_open:
         async with aiofiles.open('filename', 'w') as f:
-            await f.write(data)
+            await f.write(write_data)
+            assert f.read() == b'file chunks 1'
 
-        mock_file.write.assert_called_once_with(data)
+        mock_file_stream.write.assert_called_once_with(write_data)
 ```
 
 ### History
+
+#### 24.1.0 (2024-06-24)
+
+- Import `os.link` conditionally to fix importing on android.
+  [#175](https://github.com/Tinche/aiofiles/issues/175)
+- Remove spurious items from `aiofiles.os.__all__` when running on Windows.
+- Switch to more modern async idioms: Remove types.coroutine and make AiofilesContextManager an awaitable instead a coroutine.
+- Add `aiofiles.os.path.abspath` and `aiofiles.os.getcwd`.
+  [#174](https://github.com/Tinche/aiofiles/issues/181)
+- _aiofiles_ is now tested on Python 3.13 too.
+  [#184](https://github.com/Tinche/aiofiles/pull/184)
+- Dropped Python 3.7 support. If you require it, use version 23.2.1.
 
 #### 23.2.1 (2023-08-09)
 
 - Import `os.statvfs` conditionally to fix importing on non-UNIX systems.
   [#171](https://github.com/Tinche/aiofiles/issues/171) [#172](https://github.com/Tinche/aiofiles/pull/172)
+- aiofiles is now also tested on Windows.
 
 #### 23.2.0 (2023-08-09)
 
