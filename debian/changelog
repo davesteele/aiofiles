@@ -1,8 +1,8 @@
-aiofiles (24.1.0-1) UNRELEASED; urgency=medium
+aiofiles (24.1.0-1) unstable; urgency=medium
 
   * New upstream version
 
- -- David Steele <steele@debian.org>  Thu, 04 Jul 2024 14:28:58 -0400
+ -- David Steele <steele@debian.org>  Thu, 04 Jul 2024 14:34:03 -0400
 
 aiofiles (23.2.1-2) unstable; urgency=medium
 
