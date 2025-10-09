@@ -1,6 +1,6 @@
 # History
 
-## 25.1.0 (UNRELEASED)
+## 25.1.0 (2025-10-09)
 
 - Switch to [uv](https://docs.astral.sh/uv/) + add Python v3.14 support.
   ([#219](https://github.com/Tinche/aiofiles/pull/219))
