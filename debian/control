@@ -12,6 +12,7 @@ Build-Depends:
     python3-pytest,
     python3-pytest-asyncio,
     python3-hatchling,
+    python3-hatch-vcs,
 Standards-Version: 4.5.1
 Homepage: https://github.com/Tinche/aiofiles
 Vcs-Browser: https://github.com/davesteele/aiofiles/tree/debian
