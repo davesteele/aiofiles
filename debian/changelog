@@ -1,3 +1,9 @@
+aiofiles (25.1.0-2) unstable; urgency=medium
+
+  * Remove dependency on python2-toml: Closes: 1105778.
+
+ -- David Steele <steele@debian.org>  Tue, 25 Nov 2025 21:43:01 -0500
+
 aiofiles (25.1.0-1) unstable; urgency=medium
 
   * New upstream version.
